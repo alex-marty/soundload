@@ -47,27 +47,15 @@ class Track(Model):
     description = fields.String()
     itunes_link = fields.String()
 
-    ts_loved = fields.Integer()
-    p_id = fields.Integer()
-
-    def is_favorite(self):
-        return self.ts_loved is not None
 
 if __name__ == "__main__":
     import requests
     from pyutils import jsonutils
-    from pprint import pprint
     track_dict = jsonutils.load_file("C:/Users/Utilisateur/Dropbox/Dev/soundload/data/examples/api.track.item_id.json")
     t = Track(**track_dict)
     print(t)
     print(t.is_valid)
 
     favs = requests.get("https://api.hypem.com/v2/users/Macfli/favorites").json()
-    pprint([t for t in favs if "p_id" in t or "ts_loved" in t])
-    f = [Track(**t) for t in favs]
-    print(f)
-    nv = [t for t in f if not t.is_valid]
-    t = f[0]
-    print([t for t in f if t.p_id is not None])
 
 
